@@ -14,7 +14,7 @@
 
 The Genetic algorithm contains the following steps
 1. Set/encode the parameters into gene (The activation weight 0/1 in our case)
-2. Randomly generate M number of genes.
+2. Randomly generate M number of genes. 
 3. Fitness computation (The max side lobe level in our case)
 4. Natural selection (Based on max side lobe level. the smaller, the better)
 5. Paring and mating (Crossover)
