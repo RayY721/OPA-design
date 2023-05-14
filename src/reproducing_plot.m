@@ -1,4 +1,3 @@
-%%
 % This script reproduces the result of the "Thinned Arrays Using Genetic
 % Algorithms" published on IEEE Transactions on Antennas and Propagation,
 % by Randy L. Haupt. 
@@ -21,7 +20,7 @@ k = 2*pi/lambda;
 elementPos = (-(N-1)*d/2:d:(N-1)*d/2)';
 ang = 0;        % target angle
 %%
-for i = 1:1:1
+for i = 1:1:3
     switch i
         case 1
             w = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 0 1 0 1 0 1 1 1 0 0 1 0 0 1 0 1 1 1 0 0 0 1 0 1 0 1 1 0 1];
