@@ -14,14 +14,14 @@ lambda = 1550;
 % N = 200;
 N = 200;
 d = 0.5*lambda;
-Res = 3000;     
+Res = 5000;     
 leftend = -90;
 rightend = 90;
 k = 2*pi/lambda;
 elementPos = (-(N-1)*d/2:d:(N-1)*d/2)';
 ang = 0;        % target angle
 %%
-for i = 1:1:3
+for i = 1:1:1
     switch i
         case 1
             w = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 0 1 0 1 0 1 1 1 0 0 1 0 0 1 0 1 1 1 0 0 0 1 0 1 0 1 1 0 1];

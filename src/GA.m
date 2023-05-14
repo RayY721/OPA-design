@@ -98,7 +98,6 @@ for m = 1:1:iter
 end
 %%
 wopt = w(:,:,1);
-elementPos_opt = wopt.*elementPos;
 AF(elementPos_opt,-90,90,Res,k,N,ang,true);
 %%
 AF(elementPostemp,-90,90,Res,k,N,ang,true);
