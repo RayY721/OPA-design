@@ -1,6 +1,9 @@
 %% The GA converged to a solution with filling rate of 76%
 % This script compare the array factor found by the
 % script "GA_reprod_mate_mutation.m" and the reference paper. 
+close all
+clc
+clear
 
 %% 
 lambda = 1550e-9;
@@ -27,7 +30,7 @@ woptl = flipud(woptr);
 wopt = [woptl;woptr];      
 AF_opt = AF(elementPos,-90,90,Res,k,ang,true,wopt);
 ylim([-40 0])
-title('The result from mate and mutation')
+title('The result from crossover and mutation')
 figure
 findpeaks(AF_opt,'NPeaks',2,'SortStr','descend')
-title('The max side lobe of result from mutation only search')
+title('The max side lobe of result from algo with crossover and mutation')
