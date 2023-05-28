@@ -33,42 +33,6 @@ w = w0;
 
 wr = GA(numG,Res,iter,leftend,rightend,k,ang,elementPos,w);
 
-% wr = w0;               
-% AF_ = zeros(Res,numG);
-% pks = zeros(2,numG);
-% for m = 1:1:iter
-%     % 
-%     wl = flipud(wr);            % introduce symmetry
-%     w = [wl;wr]; 
-%     % Calculate the AF of each elements
-%     for i = 1:1:numG
-%         AF_(:,i) = AF(elementPos,leftend,rightend,Res,k,ang,false,w(:,i));
-%     end
-%     % AF_ has a row as a whole AF, # of rows is the numebr of populations
-%     for i  = 1:1:numG
-%         pks(:,i) = findpeaks(AF_(:,i),'NPeaks',2,'SortStr','descend');
-%     end
-%     sll = 0 - pks(2,:);
-%     % (Sort) the resulting sidelobe level
-%     [~,idx] = sort(sll,2,'descend');
-%     % (Selection) Discard half of the generation that gets the lower score 
-%     wr_ = wr(:,idx(1:numG/2));
-%     % (Paring and mating)
-%     crossover_point = randi(N/2-1,numG/4,1);    % half # of numG to be paired, quarter of numG crossover point
-%     for n = 1:1:numG/4
-%         offsprints = [wr_(1:crossover_point(n),2*n-1),wr_(1:crossover_point(n),2*n);
-%             wr_(crossover_point(n)+1:end,2*n),wr_(crossover_point(n)+1:end,2*n-1)];
-%         wr_ = [wr_,offsprints];
-%     end
-% 
-%     % Mutate 
-%     mutIdx = randi(N/2,1,1);
-%     % mutG = randi(numG/2,1,1)+100;
-%     % wr_(mutIdx,mutG) = not(wr_(mutIdx,mutG));
-%     wr_(mutIdx,numG/2+1:numG) = not(wr_(mutIdx,numG/2+1:numG));
-%     wr = wr_;
-% end
-
 %%
 woptr = wr(:,1);
 woptl = flipud(woptr);
