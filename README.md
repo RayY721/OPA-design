@@ -61,3 +61,17 @@ The GA is intrinsically a combinatorial optimization, where the algorithm search
 GA starts with random initializations, the process of evolution is stochastic as well. Compared with the gradient descent method, where the step of each iteration is analytically calculated based on the gradient of the objective function, the GA is less interpretable. For the gradient descent method, the "route" of convergence is the same if the initial point is the same. The GA, however, has two steps introducing randomness, crossover and mutation, making reproducing more difficult. 
 
 Therefore, I would like to conclude that the unconditionally exact reproduction of the result of the paper is hardly possible. 
+
+### 1.4 Some updates
+By combining the crossover and the mutation, the GA algorithm has converged to a solution with 76% of elements switched on at least after 3000 numebr of iterations. This convergence requires from a particular set of initializations. Then, the code for GA is coded into a function for later convenience. The function is checked by rerunning the script. 
+
+### 1.5 GA for OPA
+The GA is used to find a solution for OPA scenario. A grid with spacing of 1.7* wavelength is used. To guarantee a high angular resolution, the overall coverage of the grid is set to be 1020*wavelength. 
+
+As the spacing between elements is greater than half wavelength, the spatial aliasing (grating lobe) appears. Therefore, the range of interest is confined within (-20,20) degree. As the main lobe is always at 0 degree, the selection is performed based on the maximum side lobe within (-20,20) degree. 
+
+For saving the computational time, the symmetry is still applied although it's not necessary. Due to the increase of the array size, the script "GA_OPA" only iterate 100 times to have a preliminary result. The algorithm didn't converge after 100 iterations. However, the best result of population is still very good. The filling rate is 56.67 (roughly 56 - 57)
+
+Increase the number of iterations to 1000, the result stays around 66. The best solution after 1000 iterations is 65.33% switched on. 
+
+The script "Compare_two_OPA.m" shows two best solution from two scripts. 

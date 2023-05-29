@@ -16,7 +16,7 @@ elementPos = (-(N-1)*d/2:d:(N-1)*d/2)';
 ang = 0;        % target angle
 
 %% GA's parameters
-iter = 100;
+iter = 1000;
 numG = 400;
 prvS = rng(2023);           % set random seed
 w = rand(N/2,numG)>0.5;
@@ -28,5 +28,5 @@ disp_fr(wr,N,numG)
 woptr = wr(:,1);
 woptl = flipud(woptr);
 wopt = [woptl;woptr];      
-AF_opt = AF(elementPos,-90,90,Res,k,ang,true,wopt);
+AF_opt = AF(elementPos,-90,90,30000,k,ang,true,wopt);
 % findpeaks(AF_opt,'NPeaks',2,'SortStr','descend')
