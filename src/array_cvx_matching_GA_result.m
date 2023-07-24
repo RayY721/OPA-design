@@ -26,8 +26,8 @@ wl = flipud(wr);
 w = [wl;wr]; 
 %% S matrix
 % S = transpose(exp(1i*k*x*sin(theta')));
-S = exp(transpose(1i*k*x*sin(theta')));   % alternative
-S2 = exp(1i*k*sin(theta)*x');
+% S = exp(transpose(1i*k*x*sin(theta')));   % alternative
+S = exp(1i*k*sin(theta)*x');
 % S and S2 are suppose to be the same???
 % But why it's not zero when subtrating them
 %%
@@ -36,7 +36,7 @@ S2 = exp(1i*k*sin(theta)*x');
 e = 1;                  % The error margin
 % sll = -15;              % in dB
 % desired_pattern = upperboundgen(leftend,rightend,L);        % The desired pattern in
-desired_pattern = 20*log10(abs(S2*w/nnz(w)));
+desired_pattern = 20*log10(abs(S*w/nnz(w)));
 %%
 plot(angle,desired_pattern)
 ylim([-40 0])
@@ -48,11 +48,11 @@ cvx_begin
         % 20*log10(abs(S*w/nnz(w)))               % N is the # of active elements
         % 20*log(abs(S*w/nnz(w))/log(10))
         % not good, having problem here.......
-        norm(S2*w - desired_pattern,2) <= 10;       % problem, not in dB
+        norm(S*w - desired_pattern,2) <= 10;       % problem, not in dB
 cvx_end
 
 %%
-plot(angle,20*log10(abs(S2*w)))
+plot(angle,20*log10(abs(S*w)))
 ylim([-40 0])
 
 %%
