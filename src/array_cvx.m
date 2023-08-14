@@ -21,8 +21,9 @@ S = exp(1i*k*sin(theta)*x');            % S matrix
 left_win = -10;
 right_win = 10;
 desired_pattern = upperboundgen(leftend,rightend,[left_win right_win],L);       % The desired pattern
-%%
+figure
 plot(angle,desired_pattern)
+%%
 nc = 500;
 W = zeros(N,nc);
 for i = 1:1:nc
@@ -40,7 +41,7 @@ end
 %% Calculate and plot the l1 norm of the complex weights
 l1n = zeros(nc);            % row vector
 for i = 1:1:nc
-    l1n(i) = norm(W(:,i),1);
+    l1n(i) = norm(W(:,i),0);
 end
 epsilon = 1:1:nc;           % row vector
 figure;
