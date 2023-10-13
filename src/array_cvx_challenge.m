@@ -25,8 +25,9 @@ desired_pattern = upperboundgen(win.leftend,win.rightend,[left_win right_win],L)
 figure
 plot(angle,desired_pattern)
 %% Modify the S matrix and reference pattern
-S_new = adjustSmatrix(S,win.leftend,win.rightend,[left_win right_win],L,0.005);
-desired_pattern_modified = adjustrefpattern(desired_pattern,win.leftend,win.rightend,[left_win right_win],L,0.005);
+loose_range = 0.005;    % in degree
+S_new = adjustSmatrix(S,[win.leftend win.rightend],[left_win right_win],L,loose_range);
+desired_pattern_modified = adjustrefpattern(desired_pattern,[win.leftend win.rightend],[left_win right_win],L,loose_range);
 
 %%
 cvx_begin
@@ -44,6 +45,8 @@ plot(angle,20*log10(abs(S*w)/max(abs(S*w))))
 hold on
 xline(9)
 xline(-9)
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Beam pattern over the optimization range')
 
 % View the whole [-90,90]
@@ -57,6 +60,8 @@ plot(angle_90,20*log10(abs(S_90*w)/max(abs(S_90*w))))
 hold on
 xline(9)
 xline(-9)
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Beam pattern over the [-90,90] range')
 
 % Pattern steering
@@ -69,6 +74,8 @@ plot(angle,20*log10(abs(S*w_steered)/max(abs(S*w_steered))))
 hold on
 xline(9)
 xline(-9)
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Steered beam pattern over optimization range')
 
 % figure;
@@ -77,7 +84,10 @@ plot(angle_90,20*log10(abs(S_90*w_steered)/max(abs(S_90*w_steered))))
 hold on
 xline(9)
 xline(-9)
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Steered pattern over [-90,90]')
+
 
 %% 
 Re = 30000;
@@ -93,7 +103,7 @@ title('Steered pattern over FOV')
 
 %% Iterative hard thresholding pursuit?
 
-[cost,th_level,w_th,W,MSE] = iterativethreshold(w,S,0.002);
+[cost,th_level,w_th,W,MSE,MSE2] = iterativethreshold(w,S,0.002);
 
 %% Result evaluate (x axis is thresholding level)
 
@@ -131,7 +141,9 @@ k = 0:1:N-1;
 figure; 
 subplot(3,1,1)
 plot(k,flip(abs(cost)))
-title('The cost function vs thresholding level')
+xlabel('Sparsity')
+ylabel('Value of the objective function')
+title('The cost function vs sparsity')
 
 % MSE error
 % original pattern is the mean(reference), the MSE is the sum of error's
@@ -146,20 +158,28 @@ for i = 1:1:N
 end
 subplot(3,1,2)
 plot(k,flip(abs(MSE)))
-title('The MSE of the threshold pattern vs thresholding level')
+xlabel('Sparsity')
+ylabel('MSE')
+title('The MSE of the threshold pattern vs sparsity')
+
 subplot(3,1,3)
 plot(k,flip(nnze))
-
-title('The number of nonzero element vs thresholding level')
+xlabel('Sparsity')
+ylabel('Number of non-zeros entries')
+title('The number of nonzero element vs sparsity')
 
 
 %% Find a good threshold to truncate 
 figure;
 subplot(2,1,1)
 stem(abs(w))
+ylabel('amplitude')
+xlabel('elements index')
 subplot(2,1,2)
 % semilogy(sort(abs(w)))
 stem(abs(w_th))
+ylabel('amplitude')
+xlabel('elements index')
 
 % %% Truncate the weights
 % w_abs = abs(w);
@@ -184,11 +204,44 @@ S = exp(1i*param.k*sin(theta)*x');            % S matrix
 figure;
 subplot(2,1,1)
 plot(angle,20*log10(abs(S*w)/max(abs(S*w))))
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Original pattern')
 % figure;
 subplot(2,1,2)
 plot(angle,20*log10(abs(S*w_th)/max(abs(S*w_th))))
+xlabel('Angle in degree')
+ylabel('Normalized  intensity')
 title('Truncated pattern')
+
+%% Following investigation of the scaling amplitude
+
+w_scaled = w./10;
+figure;
+subplot(2,2,1)
+plot(angle,20*log10(abs(S*w)/max(abs(S*w))))
+title('Original pattern (normalized)')
+% figure;
+subplot(2,2,2)
+plot(angle,20*log10(abs(S*w_scaled)/max(abs(S*w_scaled))))
+title('Scaled pattern (normalized)')
+subplot(2,2,3)
+plot(angle,20*log10(abs(S*w)))
+title('Original pattern (unormalized)')
+% figure;
+subplot(2,2,4)
+plot(angle,20*log10(abs(S*w_scaled)))
+title('Scaled pattern (unormalized)')
+
+%% plot many w
+figure
+for i =1:1:25
+    subplot(5,5,i)
+    plot(angle,20*log10(abs(S*W(:,20*i))))
+end
+
+% for a particular w_t, the normalizing factor is that 1/(s(theta_max)'*w_t)
+% it makes the normalized S matrix as S/abs(s(theta_max)'*w_t)
 
 % K-means clustering
 
