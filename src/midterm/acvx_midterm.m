@@ -15,16 +15,19 @@ win.rightend = 18;
 Res = (win.rightend - win.leftend)/(L - 1);
 angle = linspace(win.leftend,win.rightend,L)';  % in degree
 theta = angle*pi/180;
-u = linspace(sin(win.leftend*pi/180),sin(win.rightend*pi/180),L)';
+angle90 = linspace(-90,90,3*L)';
+theta90 = angle90*pi/180;
+% u = linspace(sin(win.leftend*pi/180),sin(win.rightend*pi/180),L)';
 x = (-(N-1)*d/2:d:(N-1)*d/2)';
 % x = (0:d:(N-1)*d)';
 S = exp(1i*param.k*sin(theta)*x');            % S matrix
-S_u = exp(1i*param.k*u*x');
+S90 = exp(1i*param.k*sin(theta90)*x');  
+% S_u = exp(1i*param.k*u*x');
 %% Set the desired beam pattern (Loose than our requirement) 
-left_win = -0.4;
-right_win = 0.4;
-% left_win = -0.04;
-% right_win = 0.04;
+% left_win = -0.4;
+% right_win = 0.4;
+left_win = -0.04;
+right_win = 0.04;
 
 desired_pattern = upperboundgen(win.leftend,win.rightend,[left_win right_win],L);       % The desired pattern
 figure
@@ -33,14 +36,15 @@ xlabel('Angle (degrees)');
 ylabel('Amplitude')
 title('Ideal beam pattern')
 %% Modify the S matrix and reference pattern
-loose_range = 0.02;    % in degree   (0.014 is not feasible)
-% loose_range = 0.2;
+% loose_range = 0.2;    % in degree   (0.014 is not feasible)
+loose_range = 0.02;
 
 desired_pattern_modified = adjustrefpattern(desired_pattern,[win.leftend win.rightend],[left_win right_win],L,loose_range);
 
 S_new = adjustSmatrix(S,[win.leftend win.rightend],[left_win right_win],L,loose_range);
 %% Instead of runnning the following sections, load the result directly. The result is stored at the "W_4_midterm.mat"
 load("W_4_midterm.mat")
+P = 5;
 %% cvx 
 cvx_begin
     variable w(N) complex
@@ -79,14 +83,24 @@ Z = inv(diag(abs(w_rew2) + 0.0002));
 end
 %% The following sections should always be run 
 semilogy(flip(sort(abs(w))))
-title('Sorted distribution of w')
-ylabel('Amplitude')
+title('Sorted amplitude distribution of w')
+ylabel('Amplitude(dB)')
 xlabel('Index')
 figure
 plot(angle,20*log10(abs(S*w)))
 title('Array pattern')
 ylabel('Intensity(dB)')
 xlabel('Angle')
+figure
+plot(angle90,20*log10(abs(S90*w)))
+title('Array pattern')
+ylabel('Intensity(dB)')
+xlabel('Angle')
+figure
+stem(abs(w));
+title('Amplitude distribution')
+ylabel('Amplitude')
+xlabel('Index')
 %% plot the weighted result
 figure;
 for i = 1:1:P
@@ -107,7 +121,7 @@ title('Sorted distribution of w')
 ylabel('Amplitude')
 xlabel('Index')
 subplot(2,1,2)
-semilogy(flip(sort(abs(W_rew(:,5)))))
+semilogy(flip(sort(abs(W_rew2(:,5)))))
 title('Sorted distribution of w')
 ylabel('Amplitude')
 xlabel('Index')
@@ -123,6 +137,19 @@ plot(angle,20*log10(abs(S*W_rew(:,5))))
 title('Enhanced sparsity pattern')
 xlabel('Angle (degrees)');
 ylabel('Intensity(dB)')
+
+%% plot the weighted result
+figure;
+for i = 1:1:P
+subplot(P,1,i)
+semilogy(flip(sort(abs(W_rew2(:,i)))))
+end
+%%
+figure;
+for i = 1:1:P
+subplot(P,1,i)
+plot(angle,20*log10(abs(S*W_rew2(:,i))))
+end
 %% compare result and pattern between weighted l1 norm with different epsilon
 figure
 subplot(2,1,1)
@@ -130,7 +157,7 @@ semilogy(flip(sort(abs(W_rew(:,5)))))
 title('Sorted distribution of w')
 ylabel('Amplitude')
 xlabel('Index')
-subplot(2,1,2)
+subplot(2,1,2)  
 semilogy(flip(sort(abs(W_rew2(:,5)))))
 title('Sorted distribution of w')
 ylabel('Amplitude')
@@ -160,10 +187,8 @@ title("Array pattern with k =" + nnz(W_result))
 %% Animation to show that the pattern and error in w and error in pattern
 % Create a figure
 fig = figure();
-
 % Define the range for the animation
 numFrames = 1000;
-theta = linspace(0, 2*pi, numFrames);
 k_vector = 1000:-1:1;
 sortedw = flip(sort(abs(w)));
 % Loop through each frame and update the plot
@@ -232,8 +257,8 @@ disp('Animation created successfully.');
 W_result_enchanced = findbestsolution(Wrew2,S,-25,[win.leftend win.rightend],[-1 1]);
 figure
 plot(angle,20*log10(abs(S*W_result_enchanced)))
-xline(-1)
-xline(1)
+% xline(-1)
+% xline(1)
 title("Array pattern with k =" + nnz(W_result_enchanced))
 %% Animation to show that the pattern and error in enhanced w and error in pattern
 % Create a figure
@@ -303,4 +328,33 @@ close(vidObj);
 
 disp('Animation created successfully.');
 
-
+%% Display the spacial distribution of active sensor
+nzindex = find(W_result_enchanced);
+plot(x(nzindex)/param.lambda,zeros(length(nzindex),1),'o','MarkerEdgeColor','k','MarkerFaceColor','r','MarkerSize',8)
+grid on
+%%
+nzindex_shifted = zeros(size(nzindex));
+nzindex_shifted(2:end) = nzindex(1:end-1);
+spacing_in_lambda = nzindex(2:end) - nzindex_shifted(2:end);
+figure
+stem(spacing_in_lambda)
+title('The spacing between previous element (counting from the left)')
+xlabel('Index')
+ylabel('Spacing in wavelength')
+figure
+histogram(spacing_in_lambda)
+title('Histogram of the spacing')
+xlabel('The number of spacing from the first active element at the left side')
+ylabel('Spacing between active element in d')
+%%
+figure
+stem(abs(W_result_enchanced))
+xlabel('Index of element')
+ylabel('Amplitude of element')
+title('Amplitude distribution of result')
+%% Display the phase distribution of active sensor
+stem(angle(W_result_enchanced));
+% = zeros(size(nzindex));
+% Left it here for now due to the limited time. But the idea is that to
+% inspect the solution from its amplitude distribution and phase
+% distribution. 

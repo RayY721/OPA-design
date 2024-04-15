@@ -25,8 +25,8 @@ desired_pattern = upperboundgen(leftend,rightend,[left_win right_win],L);       
 figure
 plot(angle,desired_pattern)
 %% Modify the S matrix and reference pattern
-S_new = adjustSmatrix(S,leftend,rightend,[left_win right_win],L,3);
-desired_pattern_modified = adjustrefpattern(desired_pattern,leftend,rightend,[left_win right_win],L,3);
+S_new = adjustSmatrix(S,[leftend rightend],[left_win right_win],L,3);
+desired_pattern_modified = adjustrefpattern(desired_pattern,[leftend rightend],[left_win right_win],L,3);
 %%
 nc = 100;
 W_modified_small = zeros(N,nc);
@@ -56,7 +56,7 @@ ylabel('l1 norm')
 figure
 for i = 1:1:25
     subplot(5,5,i)
-    plot(abs(W_modified_small(:,4*i)))
+    stem(abs(W_modified_small(:,4*i)))
     title(['No.', num2str(4*i)])
 end
 sgtitle('Amplitude distribution of complex weights of No.4, 8,..., 100')

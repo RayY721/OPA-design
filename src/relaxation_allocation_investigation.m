@@ -28,7 +28,7 @@ right_win = 0.04;
 desired_pattern = upperboundgen(win.leftend,win.rightend,[left_win right_win],L);       % The desired pattern
 figure
 plot(angle,desired_pattern)
-desired_pattern_with_noise = desired_pattern + wgn(L,1,-48);
+% desired_pattern_with_noise = desired_pattern + wgn(L,1,-48);
 %% Modify the S matrix and reference pattern
 loose_range = 0.02;    % in degree   (0.014 is not feasible)
 % loose_range = 0.2;

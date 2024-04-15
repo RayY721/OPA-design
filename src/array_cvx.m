@@ -24,7 +24,7 @@ desired_pattern = upperboundgen(leftend,rightend,[left_win right_win],L);       
 figure
 plot(angle,desired_pattern)
 %%
-nc = 500;
+nc = 50;
 W = zeros(N,nc);
 for i = 1:1:nc
     cvx_begin

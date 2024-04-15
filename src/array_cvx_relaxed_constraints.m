@@ -24,8 +24,8 @@ desired_pattern = upperboundgen(leftend,rightend,[left_win right_win],L);       
 figure
 plot(angle,desired_pattern)
 %% Modify the S matrix and reference pattern
-S_new = adjustSmatrix(S,leftend,rightend,[left_win right_win],L,3);
-desired_pattern_modified = adjustrefpattern(desired_pattern,leftend,rightend,[left_win right_win],L,3);
+S_new = adjustSmatrix(S,[leftend rightend],[left_win right_win],L,3);
+desired_pattern_modified = adjustrefpattern(desired_pattern,[leftend rightend],[left_win right_win],L,3);
 %%
 nc = 500;
 W_modified = zeros(N,nc);

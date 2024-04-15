@@ -9,7 +9,7 @@ param.fc = param.c/param.lambda;
 param.k = 2*pi/param.lambda;
 N = 1000;                % to have a aperture of 1020 lambda
 d = param.lambda;
-L = 700;             % The resolution is at least 0.035 degree
+L = 1000;             % The resolution is at least 0.035 degree
 win.leftend = -18;
 win.rightend = 18;
 Res = (win.rightend - win.leftend)/(L - 1);
@@ -34,7 +34,7 @@ cvx_begin
     variable w(N) complex
     minimize(norm(w,1))
     subject to
-        norm(S_new*w - desired_pattern_modified,2) <= 0.21;       % problem, not in dB
+        norm(S_new*w - desired_pattern_modified,2) <= 0.5;      % 0.21 if L=700, 0.5 if L = 1000 % problem, not in dB
 cvx_end
 % W_modified_small(:,i) = w;
 

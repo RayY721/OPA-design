@@ -35,6 +35,7 @@ cvx_begin
     minimize(norm(w,1))
     subject to
         norm(S_new*w - desired_pattern_modified,2) <= 0.21;       % problem, not in dB
+        
 cvx_end
 % W_modified_small(:,i) = w;
 
@@ -143,13 +144,13 @@ title('Steered pattern over FOV')
 % title('The number of nonzero element vs thresholding level')
 
 %% Result evaluation (x axis is sparsity)
-k = 0:1:N-1;
-figure; 
-subplot(3,1,1)
-plot(k,flip(abs(cost)))
-xlabel('Sparsity')
-ylabel('Value of the objective function')
-title('The cost function vs sparsity')
+% k = 0:1:N-1;
+% figure; 
+% subplot(3,1,1)
+% plot(k,flip(abs(cost)))
+% xlabel('Sparsity')
+% ylabel('Value of the objective function')
+% title('The cost function vs sparsity')
 
 % MSE error
 % original pattern is the mean(reference), the MSE is the sum of error's
@@ -162,13 +163,13 @@ for i = 1:1:N
     % MSE(i) = (W(:,i) - w)'*S'*S*(W(:,i) - w)/L;
     nnze(i) = nnz(W(:,i));
 end
-subplot(3,1,2)
+subplot(2,1,1)
 plot(k,flip(abs(MSE)))
 xlabel('Sparsity')
 ylabel('MSE')
 title('The MSE of the threshold pattern vs sparsity')
 
-subplot(3,1,3)
+subplot(2,1,2)
 plot(k,flip(nnze))
 xlabel('Sparsity')
 ylabel('Number of non-zeros entries')
@@ -273,13 +274,14 @@ for i=1:1:numFrames
     plot(angle,20*log10(abs(S/abs(S(index_S,:)*W(:,i))*W(:,i))))
     ylim([-80, 0]);
     title("Array pattern (k = " + (1000 - i) +")")
-    xlabel('Angle')
+    xlabel('Angle (in degree)')
     ylabel('Normalized intensity')
 
     subplot(3,1,2)
-    plot(fliped_k,abs(MSE))
+    semilogy(fliped_k,abs(MSE))
     set(gca, 'XDir','reverse')
     xline(fliped_k(i))
+    text(fliped_k(i),abs(MSE(i)),"\leftarrow MSE = " + abs(MSE(i)))
     xlim([0, 1000]);
     ylim([0, 1]);
     xlabel('Sparsity (k)')
@@ -290,6 +292,7 @@ for i=1:1:numFrames
     plot(fliped_k,nnze)
     set(gca, 'XDir','reverse')
     xline(fliped_k(i))
+    text(fliped_k(i),nnze(i),"\leftarrow k = " + nnze(i))
     xlim([0, 1000]);
     ylim([0, 1000]);
     xlabel('Sparsity (k)')
@@ -308,7 +311,7 @@ for i=1:1:numFrames
 
     % Write the image to a video file (requires VideoWriter)
     if i == 1
-        videoFileName = 'Array_pattern_evolution_3plots.avi';
+        videoFileName = 'Array_pattern_evolution_3plots.gif';
         vidObj = VideoWriter(videoFileName);
         open(vidObj);
     end

@@ -9,7 +9,7 @@ param.fc = param.c/param.lambda;
 param.k = 2*pi/param.lambda;
 N = 1000;                % to have a aperture of 1020 lambda
 d = param.lambda;
-L = 700;             % The resolution is at least 0.035 degree
+L = 1000;             % The resolution is at least 0.035 degree
 win.leftend = -18;
 win.rightend = 18;
 Res = (win.rightend - win.leftend)/(L - 1);
@@ -25,15 +25,16 @@ desired_pattern = upperboundgen(win.leftend,win.rightend,[left_win right_win],L)
 figure
 plot(angle,desired_pattern)
 %% Modify the S matrix and reference pattern
-S_new = adjustSmatrix(S,[win.leftend win.rightend],[left_win right_win],L,0.1);
-desired_pattern_modified = adjustrefpattern(desired_pattern,[win.leftend win.rightend],[left_win right_win],L,0.005);
+loose_range = 0.005;    % in degree
+S_new = adjustSmatrix(S,[win.leftend win.rightend],[left_win right_win],L,loose_range);
+desired_pattern_modified = adjustrefpattern(desired_pattern,[win.leftend win.rightend],[left_win right_win],L,loose_range);
 
 %%
 cvx_begin
     variable w(N) complex
     minimize(norm(w,1))
     subject to
-        norm(S_new*w - desired_pattern_modified,2) <= 0.21;       % problem, not in dB
+        norm(S_new*w - desired_pattern_modified,2) <= 0.3;       % problem, not in dB
 cvx_end
 % W_modified_small(:,i) = w;
 

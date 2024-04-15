@@ -4,17 +4,11 @@ fig = figure();
 
 % Define the range for the animation
 numFrames = 1000;
-theta = linspace(0, 2*pi, numFrames);
 
 % Loop through each frame and update the plot
 for i = 1:5:numFrames
     % Clear the previous plot
     clf
-    
-    % Create your animation content for this frame
-    % x = cos(theta(i));
-    % y = sin(theta(i));
-    
     % Update the plot
     subplot(2,1,1)
     plot(angle,20*log10(abs(S*W(:,i))))

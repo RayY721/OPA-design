@@ -1,4 +1,4 @@
-load('complex_weights.mat', 'W_modified_small')
+load('complex_weight.mat', 'W_modified_small')
 
 w = W_modified_small(:,4);
 figure
@@ -25,7 +25,7 @@ title('AF after thresholding')
 norm(abs(S*w_thresheld - S*w))
 % norm(abs(S*(w_thresheld-w)))
 % norm(S*(w_thresheld-w))
-
+figure
 semilogy(sort(abs(w)))
 
 %% check the structure of the S matrix
