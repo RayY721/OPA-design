@@ -6,6 +6,9 @@
  1. Hard (equality) constraint can force the peak of beampattern to be unit. 
  2. Beampattern can be bounded to control the peak sidelobe
 
+## Prerequisite: 
+ Installation of the [CVX solver](https://cvxr.com/cvx/). 
+
 
 ## Explanation of this repository
 The explanation of this repository is as following:
