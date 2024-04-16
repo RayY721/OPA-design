@@ -9,7 +9,7 @@
 
 ## Explanation of this repository
 The explanation of this repository is as following:
-Only the folder "src/After_graduation" contains meaningful scripts, which are used to generate plots included in my thesis. I implemented three algorithms solving the problem formulation, LASSO, thresholding and reweighted l1 norm minimization. 
+Only the folder "**src/After_graduation**" contains meaningful scripts, which are used to generate plots included in my thesis. I implemented three algorithms solving the problem formulation, LASSO, thresholding and reweighted l1 norm minimization. 
 The implementations of algorithms are in *Scripts*. The involving functions are *Functions*. The results and the parameters that are used to generate these results are in *Results and Parameters*. 
 ### Scripts
 Three scripts contain the code for minimization problem and the code to generate the plots. 
